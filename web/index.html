@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="CREDLAB — explainable open corporate-credit research from public filings.">
+  <title>CREDLAB — Open Credit Intelligence</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700&family=Newsreader:opsz,wght@6..72,500;6..72,600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="professional.css">
+</head>
+<body>
+  <header class="masthead">
+    <a class="brand" href="#radar"><span class="brandmark">CL</span><span><b>CREDLAB</b><small>OPEN CREDIT INTELLIGENCE</small></span></a>
+    <nav aria-label="Research workflow">
+      <button data-view="radar" class="active"><i>01</i> Credit Radar</button><button data-view="dossier"><i>02</i> Issuer Dossier</button>
+      <button data-view="mri"><i>03</i> Credit MRI</button><button data-view="scenario"><i>04</i> Scenario Lab</button>
+    </nav>
+    <button class="source-pill" id="methodologyOpen"><span></span> METHODOLOGY · v0.1</button>
+  </header>
+  <main>
+    <section id="radar" class="view active">
+      <div class="eyebrow">DISCOVER / UNIVERSE MONITOR</div>
+      <div class="hero"><div><h1>Credit Radar</h1><p>Find the fundamental signals that deserve investigation—not a black-box score.</p></div><div id="asof" class="asof"></div></div>
+      <div class="notice" id="dataNotice">Loading public filing data…</div>
+      <div class="filters"><label>Sector<select id="sectorFilter"><option value="ALL">All sectors</option></select></label><label>Trend<select id="trendFilter"><option value="ALL">All signals</option><option>IMPROVING</option><option>STABLE</option><option>DETERIORATING</option><option>STRESS WATCH</option></select></label><label>Max leverage<input id="leverageFilter" type="range" min="1" max="10" step=".5" value="10"><output id="leverageOutput">10.0x</output></label><label>Search<input id="searchFilter" type="search" placeholder="Ticker or issuer"></label></div>
+      <div class="radar-grid">
+        <article class="panel chart-panel"><header><div><span class="kicker">CREDIT MAP</span><h2>Debt capacity vs. debt burden</h2></div><div class="legend"><span class="improving">● Improving</span><span class="stable">● Stable</span><span class="deteriorating">● Deteriorating</span><span class="stress">● Stress watch</span></div></header><div id="scatter" class="scatter"></div><footer>Bubble area represents total debt · Click an issuer to investigate</footer></article>
+        <aside class="panel watch"><header><span class="kicker">INVESTIGATION QUEUE</span><h2>Signals to examine</h2></header><div id="watchlist"></div></aside>
+      </div>
+      <article class="panel table-panel"><header><div><span class="kicker">COVERAGE UNIVERSE</span><h2>Issuer evidence matrix</h2></div><span id="resultCount" class="count"></span></header><div class="table-wrap"><table><thead><tr><th>Issuer</th><th>Sector</th><th>Revenue</th><th>Total debt</th><th>Debt / EBITDA</th><th>Coverage</th><th>FCF / Debt</th><th>Data</th><th>Signal</th></tr></thead><tbody id="issuerRows"></tbody></table></div></article>
+    </section>
+
+    <section id="dossier" class="view"><div class="eyebrow">INVESTIGATE / ISSUER DOSSIER</div><div id="dossierContent"></div></section>
+    <section id="mri" class="view"><div class="eyebrow">DIAGNOSE / CREDIT MRI</div><div id="mriContent"></div></section>
+    <section id="scenario" class="view"><div class="eyebrow">STRESS / SCENARIO LAB</div><div id="scenarioContent"></div></section>
+  </main>
+  <dialog id="methodologyDialog" class="methodology-dialog">
+    <button class="dialog-close" id="methodologyClose" aria-label="Close methodology">×</button>
+    <span class="kicker">CREDLAB METHODOLOGY / v0.1.0</span>
+    <h2>Evidence before interpretation.</h2>
+    <p>CREDLAB uses annual SEC Company Facts observations from 10-K and 10-K/A filings. Missing facts remain unavailable; they are never silently estimated.</p>
+    <div class="method-grid">
+      <div><small>OBSERVED FACTS</small><p>Revenue, operating income, D&amp;A, interest expense, cash, debt, cash flow and capex retain their US-GAAP concept, filing date and accession link.</p></div>
+      <div><small>CALCULATED METRICS</small><p>EBITDA proxy = operating income + D&amp;A. FCF = operating cash flow − capex. Net debt = total debt − cash.</p></div>
+      <div><small>INTERPRETATION</small><p>Directional labels apply documented CREDLAB heuristics. They are research signals—not official credit ratings or agency criteria.</p></div>
+      <div><small>DATA QUALITY</small><p>Completeness is the share of eight core facts available for the latest annual period. It measures coverage, not accuracy or credit quality.</p></div>
+    </div>
+    <p class="dialog-note">Educational/open research only. Not investment advice. Not a credit rating. Always review the underlying filing.</p>
+  </dialog>
+  <footer class="site-footer"><span>CREDLAB / OPEN RESEARCH EXPERIMENT</span><span>Educational research only · Not investment advice · Not a credit rating</span><a href="https://www.sec.gov/edgar/sec-api-documentation" target="_blank" rel="noreferrer">Source methodology ↗</a></footer>
+  <script src="app.js"></script>
+</body>
+</html>

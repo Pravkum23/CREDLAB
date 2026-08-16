@@ -1,0 +1,10 @@
+[project]
+name = "credlab"
+version = "0.1.0"
+description = "Open, explainable corporate-credit research from public filings"
+requires-python = ">=3.11"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
+
