@@ -21,12 +21,26 @@ def calculate_metrics(period: dict[str, Any]) -> dict[str, Any]:
     long_debt = period.get("long_term_debt")
     observed_total = period.get("total_debt")
     debt = observed_total if observed_total is not None else (short_debt + long_debt if short_debt is not None and long_debt is not None else None)
+    provenance = dict(period.get("provenance", {}))
+    if observed_total is None and debt is not None:
+        short_source = provenance.get("short_term_debt", {})
+        long_source = provenance.get("long_term_debt", {})
+        provenance["total_debt"] = {
+            "taxonomy": "calculated",
+            "concept": "Short-term debt + long-term debt",
+            "form": long_source.get("form") or short_source.get("form"),
+            "filed": long_source.get("filed") or short_source.get("filed"),
+            "accession": long_source.get("accession") or short_source.get("accession"),
+            "unit": "USD",
+            "source_url": long_source.get("source_url") or short_source.get("source_url"),
+        }
     cash = period.get("cash")
     net_debt = debt - cash if debt is not None and cash is not None else None
     ocf, capex = period.get("operating_cash_flow"), period.get("capex")
     fcf = ocf - capex if ocf is not None and capex is not None else None
     return {
         **period,
+        "provenance": provenance,
         "ebitda": ebitda,
         "ebitda_proxy": True,
         "total_debt": debt,

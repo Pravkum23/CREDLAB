@@ -1,8 +1,16 @@
 # CREDLAB — Open Credit Intelligence
 
+[![CI](https://github.com/Pravkum23/CREDLAB/actions/workflows/ci.yml/badge.svg)](https://github.com/Pravkum23/CREDLAB/actions/workflows/ci.yml)
+[![Deploy Pages](https://github.com/Pravkum23/CREDLAB/actions/workflows/pages.yml/badge.svg)](https://github.com/Pravkum23/CREDLAB/actions/workflows/pages.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-1d6b50.svg)](LICENSE)
+
+**[Open the live research workstation](https://pravkum23.github.io/CREDLAB/)**
+
 > Can we reproduce parts of an institutional corporate-credit research workflow using only public information?
 
 CREDLAB is an open research experiment that turns public SEC filings into an explainable corporate-credit workflow: **Discover → Investigate → Diagnose → Stress → Form Thesis**. It is deliberately not a ratings model. Every displayed conclusion is backed by an observed filing fact, a documented calculation, and an explicit research heuristic.
+
+![CREDLAB Credit MRI for Verizon](docs/screenshots/credit-mri-verizon.png)
 
 ## The four-screen MVP
 
@@ -11,11 +19,21 @@ CREDLAB is an open research experiment that turns public SEC filings into an exp
 - **Credit MRI** — a screenshot-ready diagnostic of operating trend, financial risk, liquidity, and available market context.
 - **Scenario Lab** — apply Base, Bull, or Stress assumptions and see debt-service capacity recalculate immediately. Missing inputs stay `N/A`.
 
+| Credit Radar | Scenario Lab |
+|---|---|
+| ![Credit Radar](docs/screenshots/credit-radar.png) | ![Scenario Lab](docs/screenshots/scenario-lab.png) |
+
+## Featured case study
+
+The [Intel validation case](docs/case-study-intel.md) shows why an explainable workflow matters. The filing supports negative calculated free cash flow and material net debt, but the comparable D&A fact is unavailable. CREDLAB therefore leaves EBITDA-based leverage and coverage as `N/A` instead of manufacturing a conclusion.
+
+Five issuers—Microsoft, Verizon, Boeing, Ford, and Intel—are documented in the [public-data validation log](docs/validation.md).
+
 ## Methodology
 
-The refresh pipeline downloads SEC Company Facts, caches the unmodified JSON locally, selects annual `10-K`/`10-K/A` observations, maps common US-GAAP concepts, and emits a static site dataset. An amended filing wins only when it has a later filed date for the same period.
+The refresh pipeline downloads SEC Company Facts, caches the unmodified JSON locally, selects annual `10-K`/`10-K/A` observations, maps common US-GAAP concepts, and emits a static site dataset. An amended filing wins only when it has a later filed date for the same period; duration facts prefer the observation closest to one fiscal year.
 
-Observed facts and calculated fields are kept separate. No missing values are estimated.
+Observed facts and calculated fields are kept separate. Each latest-period observed fact retains its taxonomy concept, filing date, accession, and source link. No missing values are estimated.
 
 | Metric | Formula |
 |---|---|
@@ -66,7 +84,7 @@ The committed `web/data/credit.json` is a reproducible public-data snapshot for 
 python -m pytest
 ```
 
-Tests use synthetic facts and do not require network access. They cover formulas, missing/negative denominators, amended-filing selection, trend classification, and scenario recalculation.
+Tests use synthetic facts and do not require network access. They cover formulas, missing/negative denominators, amended-filing selection, annual-duration selection, trend classification, and scenario recalculation.
 
 ## Data sources and limitations
 
@@ -94,7 +112,17 @@ run_pipeline.py            refresh + site dataset build
 
 GitHub Pages serves the `web/` artifact through the included workflow. CI separately installs the project and runs the test suite.
 
+## Project record
+
+- [Methodology and formulas](#methodology)
+- [Intel case study](docs/case-study-intel.md)
+- [Five-issuer validation log](docs/validation.md)
+- [Changelog](CHANGELOG.md)
+- [Contributing](CONTRIBUTING.md)
+- [MIT license](LICENSE)
+
+Created and maintained by [Praveen Kumar](https://github.com/Pravkum23).
+
 ## Responsible use
 
 **Educational/open research only. Not investment advice. Not a credit rating.** CREDLAB does not reproduce an agency methodology or issue an official credit opinion. Validate all facts against source filings before relying on them.
-
